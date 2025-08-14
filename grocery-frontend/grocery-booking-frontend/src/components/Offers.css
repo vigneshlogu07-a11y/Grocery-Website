@@ -1,0 +1,22 @@
+.offers-section {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.offer-card {
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  transition: transform 0.2s ease, box-shadow 0.2s;
+}
+
+.offer-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.offer-code {
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  border-radius: 20px;
+}
