@@ -9,4 +9,4 @@ public class GroceryBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GroceryBackendApplication.class, args);
 	}
-
+}
