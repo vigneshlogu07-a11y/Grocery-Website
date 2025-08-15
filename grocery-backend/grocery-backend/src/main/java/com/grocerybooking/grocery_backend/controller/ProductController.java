@@ -22,45 +22,73 @@ public class ProductController {
         this.productService = productService;
     }
 
-    // Get all products
+    // ✅ Get all products
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
-    // Get product by ID
+    // ✅ Get product by ID
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 
-    // Create product without image
-    @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        return productService.saveProduct(product);
-    }
-
-    // Upload product with image (multipart)
-    @PostMapping(path = "/upload", consumes = {"multipart/form-data"})
-    public ResponseEntity<String> uploadProduct(
+    // ✅ Create product WITH optional image
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<Product> addProduct(
             @RequestParam String name,
             @RequestParam String category,
             @RequestParam Double price,
             @RequestParam int stock,
-            @RequestParam MultipartFile image) throws IOException {
+            @RequestParam(required = false) MultipartFile image
+    ) throws IOException {
 
         Product product = new Product();
         product.setName(name);
         product.setCategory(category);
         product.setPrice(price);
         product.setStock(stock);
-        product.setImage(image.getBytes());
 
-        productService.saveProduct(product);
-        return ResponseEntity.ok("Product uploaded successfully!");
+        if (image != null && !image.isEmpty()) {
+            product.setImage(image.getBytes());
+        }
+
+        Product saved = productService.saveProduct(product);
+        return ResponseEntity.ok(saved);
     }
 
-    // Get product image by ID
+    // ✅ Update product WITH optional new image
+    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<Product> updateProduct(
+            @PathVariable Long id,
+            @RequestParam String name,
+            @RequestParam String category,
+            @RequestParam Double price,
+            @RequestParam int stock,
+            @RequestParam(required = false) MultipartFile image
+    ) throws IOException {
+
+        Product existingProduct = productService.getProductById(id);
+        if (existingProduct == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        existingProduct.setName(name);
+        existingProduct.setCategory(category);
+        existingProduct.setPrice(price);
+        existingProduct.setStock(stock);
+
+        // If a new image is provided, replace the old one
+        if (image != null && !image.isEmpty()) {
+            existingProduct.setImage(image.getBytes());
+        }
+
+        Product updated = productService.saveProduct(existingProduct);
+        return ResponseEntity.ok(updated);
+    }
+
+    // ✅ Get product image by ID
     @GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getProductImage(@PathVariable Long id) throws IOException {
         Product product = productService.getProductById(id);
@@ -83,7 +111,7 @@ public class ProductController {
                 .body(product.getImage());
     }
 
-    // Delete product
+    // ✅ Delete product
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);

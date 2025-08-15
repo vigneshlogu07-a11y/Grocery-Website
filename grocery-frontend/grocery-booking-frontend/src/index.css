@@ -11,12 +11,45 @@
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
 }
 
-body {
+html, body, #root {
+  height: 100%;
+  margin: 0;
   background: var(--bg);
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-y: auto; /* enable vertical scrolling */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #4CAF50 rgba(0,0,0,0.1);
 }
+
+/* Chunky glowing gradient scrollbar for Chrome, Edge, Safari */
+/* Modern scrollbar with gradient */
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.05);
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f97316 0%, #ef4444 100%);
+  border-radius: 10px;
+  border: 2px solid rgba(0,0,0,0.05);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff9800 0%, #f44336 100%);
+}
+
+/* For Firefox */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #f97316 #f6f7fb; /* thumb color, track color */
+}
+
 
 /* navbar */
 .navbar {
@@ -80,7 +113,12 @@ body {
 
 /* small utilities */
 .text-muted-2 { color: var(--muted); }
-.premium-card { background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4)); padding:1rem; border-radius:10px; box-shadow: var(--shadow-soft); }
+.premium-card { 
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4)); 
+  padding:1rem; 
+  border-radius:10px; 
+  box-shadow: var(--shadow-soft); 
+}
 
 /* Footer */
 .footer-section {
@@ -134,11 +172,6 @@ body {
   font-size: 0.8rem;
 }
 
-html, body, #root {
-  height: 100%;
-  margin: 0;
-}
-
 /* Flex container for App */
 .app-container {
   display: flex;
@@ -149,4 +182,6 @@ html, body, #root {
 /* Main content grows to push footer down */
 .main-content {
   flex: 1;
+  overflow-y: auto; /* scrollable content */
+  padding: 1rem 2rem;
 }

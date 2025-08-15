@@ -1,6 +1,5 @@
-
-import React, { useEffect } from 'react'; 
-import { Routes, Route, Navigate} from 'react-router-dom';
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Navbar from './components/Navbar.jsx';
 import Home from './pages/Home.jsx';
@@ -14,23 +13,34 @@ import Offers from './components/Offers.jsx';
 import About from './components/About.jsx';
 import Contact from './components/Contact.jsx';
 import Footer from './components/Footer.jsx';
+import AdminProducts from './pages/AdminProducts.jsx';
+import PrivateAdminRoute from "./pages/PrivateAdminRoute.jsx";
+import AdminLogin from "./pages/AdminLogin.jsx";
+
+
+
+
+// Admin Dashboard Page
+import AdminDashboard from './pages/AdminDashboard.jsx';
 
 // Admin-only route protection
 // function PrivateAdminRoute({ children }) {
-//   useEffect(() => {
-//     console.log('User role:', localStorage.getItem('role'));
-//   }, []);
-
-//   const role = localStorage.getItem('role'); // Example: "ADMIN"
+//   const role = localStorage.getItem('role'); // Should be set after login
 //   return role === 'ADMIN' ? children : <Navigate to="/" />;
 // }
 
+
+
 export default function App() {
+
+  
   return (
     <div className="app-container">
       <Navbar />
       <div className="main-content">
         <Routes>
+            {/* Admin Login Route */}
+          <Route path="/admin-login" element={<AdminLogin />} />
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -53,14 +63,25 @@ export default function App() {
           {/* User Bookings Page */}
           <Route path="/bookings" element={<Bookings />} />
 
-          {/* Admin-only Route */}
-          {/* <Route
-            path="/admin/upload"
+          {/* Admin-only Routes */}
+          <Route
+            path="/admin"
             element={
               <PrivateAdminRoute>
+                <AdminDashboard />
               </PrivateAdminRoute>
             }
-          /> */}
+          />
+          <Route
+             path="/admin/products"
+             element={
+           <PrivateAdminRoute>
+              <AdminProducts />
+          </PrivateAdminRoute>
+           }
+          />
+
+
         </Routes>
       </div>
 

@@ -22,23 +22,51 @@ export default function Login() {
   };
 
   return (
-    <div className="container my-5" style={{ maxWidth: 520 }}>
-      <div className="card p-4 product-card">
-        <h4 className="mb-3">Login</h4>
+    <div className="container my-5 d-flex justify-content-center">
+      <div className="card p-5 product-card" style={{ maxWidth: 480, borderRadius: '12px', boxShadow: '0 6px 20px rgba(0,0,0,0.1)', backgroundColor: '#FFFFFF' }}>
+        <h3 className="mb-4 text-center" style={{ color: '#4CAF50' }}>Welcome Back</h3>
         <form onSubmit={submit}>
           <div className="mb-3">
-            <label className="form-label">Username</label>
-            <input required className="form-control" value={data.username} onChange={e=>setData({...data, username:e.target.value})}/>
+            <label className="form-label" style={{ color: '#212121' }}>Username</label>
+            <input 
+              required 
+              className="form-control" 
+              value={data.username} 
+              onChange={e => setData({...data, username: e.target.value})}
+              style={{ borderRadius: '8px', borderColor: '#4CAF50' }}
+            />
           </div>
-          <div className="mb-3">
-            <label className="form-label">Password</label>
-            <input type="password" required className="form-control" value={data.password} onChange={e=>setData({...data, password:e.target.value})}/>
+          <div className="mb-4">
+            <label className="form-label" style={{ color: '#212121' }}>Password</label>
+            <input 
+              type="password" 
+              required 
+              className="form-control" 
+              value={data.password} 
+              onChange={e => setData({...data, password: e.target.value})}
+              style={{ borderRadius: '8px', borderColor: '#4CAF50' }}
+            />
           </div>
-          <div className="d-flex justify-content-between align-items-center">
-            <button className="btn btn-primary" disabled={loading}>{loading ? 'Signing in...' : 'Sign in'}</button>
-            <Link to="/register">Create account</Link>
-          </div>
+          <button 
+            type="submit" 
+            className="btn w-100 fw-bold" 
+            disabled={loading}
+            style={{
+              backgroundColor: '#4CAF50',
+              color: '#FFFFFF',
+              borderRadius: '50px',
+              padding: '10px',
+              transition: '0.3s'
+            }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#45A049'}
+            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#4CAF50'}
+          >
+            {loading ? 'Signing in...' : 'Sign In'}
+          </button>
         </form>
+        <div className="text-center mt-3" style={{ color: '#212121' }}>
+          Don’t have an account? <Link to="/register" style={{ color: '#FF9800', fontWeight: '500' }}>Create one</Link>
+        </div>
       </div>
     </div>
   );

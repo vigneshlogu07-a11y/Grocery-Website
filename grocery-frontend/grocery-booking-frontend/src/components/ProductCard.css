@@ -1,0 +1,10 @@
+.fade-popup {
+  opacity: 0;
+  animation: popupFade 1.5s forwards;
+}
+
+@keyframes popupFade {
+  0% { opacity: 0; transform: translate(-50%, 20%); }
+  20% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -10%); }
+}

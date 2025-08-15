@@ -10,4 +10,3 @@ public class GroceryBackendApplication {
 		SpringApplication.run(GroceryBackendApplication.class, args);
 	}
 
-}

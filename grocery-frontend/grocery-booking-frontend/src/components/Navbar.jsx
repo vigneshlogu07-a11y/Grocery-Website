@@ -3,52 +3,127 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
 import { useCart } from '../context/CartContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+import logo from '../assets/logo.png';
 
 export default function Navbar() {
   const { items } = useCart();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  return (
-    <nav className="navbar navbar-expand-lg navbar-light px-4">
-      <div className="container-fluid">
-        <Link className="navbar-brand fw-bold" to="/">
-        <img 
-        src="src/assets/logo.png" 
-        alt="Grocery Logo" 
-        style={{ height: '40px', marginRight: '8px' }} 
-      />Grocery<span className="text-primary">+ </span></Link>
+  // Explicit route mapping
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Cart', path: '/cart' },
+    { name: 'My Bookings', path: '/bookings' },
+    { name: 'Offers', path: '/offers' },
+    { name: 'About Us', path: '/about' }, // fixed route
+    { name: 'Contact', path: '/contact' }
+  ];
 
+  return (
+    <nav className="navbar navbar-expand-lg shadow-sm px-4" 
+         style={{ 
+           background: 'linear-gradient(90deg, #4CAF50, #81C784)', 
+           transition: '0.3s' 
+         }}>
+      <div className="container-fluid">
+        {/* Logo */}
+        <Link className="navbar-brand fw-bold d-flex align-items-center" to="/">
+          <img 
+            src={logo} 
+            alt="Grocery Logo" 
+            style={{ 
+              height: '45px', 
+              marginRight: '10px', 
+              borderRadius: '8px', 
+              boxShadow: '1px 1px 5px rgba(0,0,0,0.3)' 
+            }} 
+          />
+          <span className="text-white">Grocery<span style={{color:'#FFEB3B'}}>+</span></span>
+        </Link>
+
+        {/* Toggle for mobile */}
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
           <span className="navbar-toggler-icon"></span>
         </button>
 
+        {/* Menu */}
         <div className="collapse navbar-collapse" id="navMenu">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/cart">Cart</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/bookings">My Bookings</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/offers">Offers</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/about">About Us</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/contact">Contact</Link></li>
-
+            {navLinks.map((link, idx) => (
+              <li className="nav-item" key={idx}>
+                <Link
+                  className="nav-link fw-medium"
+                  style={{ color: '#FFFFFF', transition: '0.3s' }}
+                  to={link.path}
+                  onMouseEnter={e => e.currentTarget.style.color = '#FF9800'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#FFFFFF'}
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
           </ul>
 
+          {/* Cart & User */}
           <div className="d-flex align-items-center gap-3">
-            <button className="btn btn-outline-secondary position-relative" onClick={() => navigate('/cart')}>
+            <button 
+              className="btn rounded-circle shadow-sm d-flex justify-content-center align-items-center"
+              style={{ 
+                width: '45px', 
+                height: '45px', 
+                backgroundColor: '#FFFFFF',
+                color: '#212121',
+                position: 'relative'
+              }}
+              onClick={() => navigate('/cart')}
+            >
               <FaShoppingCart />
-              <span className="badge bg-danger rounded-pill position-absolute" style={{ top: '-6px', right: '-10px' }}>
+              <span 
+                className="badge rounded-pill position-absolute" 
+                style={{ 
+                  top: '-5px', 
+                  right: '-5px', 
+                  backgroundColor: '#FFEB3B', 
+                  color: '#212121',
+                  fontSize: '0.7rem'
+                }}
+              >
                 {items.length}
               </span>
             </button>
 
             {user ? (
-              <>
-                <span className="text-muted-2">Hi, <strong>{user}</strong></span>
-                <button className="btn btn-sm btn-primary" onClick={() => { logout(); navigate('/'); }}>Logout</button>
-              </>
+              <div className="d-flex align-items-center gap-2">
+                <span className="fw-semibold text-white">Hi, {user}</span>
+                <button 
+                  className="btn rounded-pill shadow-sm"
+                  style={{ 
+                    backgroundColor: '#FF9800', 
+                    color: '#212121', 
+                    transition: '0.3s' 
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e68a00'}
+                  onMouseLeave={e => e.currentTarget.style.backgroundColor = '#FF9800'}
+                  onClick={() => { logout(); navigate('/'); }}
+                >
+                  Logout
+                </button>
+              </div>
             ) : (
-              <Link className="btn btn-primary btn-sm" to="/login"><FaUser /> &nbsp; Login</Link>
+              <Link 
+                className="btn rounded-pill shadow-sm d-flex align-items-center gap-1 fw-bold"
+                style={{ 
+                  backgroundColor: '#FFEB3B', 
+                  color: '#212121', 
+                  transition: '0.3s' 
+                }}
+                to="/login"
+                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#f5e100'}
+                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#FFEB3B'}
+              >
+                <FaUser /> Login
+              </Link>
             )}
           </div>
         </div>
